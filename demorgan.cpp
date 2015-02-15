@@ -127,7 +127,7 @@ void rest(){
             break;
             
         default: 
-
+            epsilon();
             break;
     }
 }
