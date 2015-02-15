@@ -1,5 +1,7 @@
 //--------------------------------------------------------------
 // Predictive parser implementation for logical expressions.
+// Translates logical expressions into complement form using
+// De Morgan's law for logical expressions.
 //
 // BNF:
 //______________________________________________________________
@@ -59,10 +61,14 @@ int i;
 //  Main.
 //--------------------------------------------------------------
 int main(){        
-    i = 0;  
+    cout << "\nEnter logical expression: ";
+    
     getline(cin, lookahead);
     boost::erase_all(lookahead, " ");
-            
+    i = 0;
+    
+    cout << "\nEquivalent complement: ";
+    
     //De Morgan's law...        
     print('!');
     print('(');
@@ -83,7 +89,6 @@ void expression(){
     switch(lookahead[i]){
         case '!':
             print('!');
-            print('!');
             next();
             expression();
             break;
@@ -99,22 +104,6 @@ void expression(){
             proposition();
             rest();
             break;
-    }
-}
-
-//--------------------------------------------------------------
-// Parses proposition production.
-//--------------------------------------------------------------
-void proposition(){
-    // If lookahead in {a, b, c, ..., z}
-    if (lookahead[i] >= 97 && lookahead[i] <= 122){
-        print('!');
-        cout << lookahead[i] << ' ';        
-        next();   
-    }
-    else {
-        cout << "\nInvalid input: " << lookahead[i] << ".\n\n";
-        exit(1);
     }
 }
 
@@ -138,8 +127,24 @@ void rest(){
             break;
             
         default: 
-            epsilon();
+
             break;
+    }
+}
+
+//--------------------------------------------------------------
+// Parses proposition production.
+//--------------------------------------------------------------
+void proposition(){
+    // If lookahead in {a, b, c, ..., z}
+    if (lookahead[i] >= 97 && lookahead[i] <= 122){
+        print('!');
+        cout << lookahead[i] << ' ';        
+        next();   
+    }
+    else {
+        cout << "\nInvalid input: " << lookahead[i] << ".\n\n";
+        exit(1);
     }
 }
 
@@ -161,7 +166,9 @@ void next(){ i++; }
 //--------------------------------------------------------------
 // Method outputs character to console.
 //--------------------------------------------------------------
-void print(char c){ cout << c << ' '; }
+void print(char c){
+    cout << c << ' ';    
+}
 
 //--------------------------------------------------------------
 // Method validates character input.
